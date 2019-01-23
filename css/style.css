@@ -1,8 +1,70 @@
-h1{
+body{
+  background-color: rgb(233, 233, 233);
+  font-family: "helvetica";
+}
+
+h1 {
   display: flex;
   justify-content: center;
 }
-.board-game{
+
+header{
   display: flex;
   justify-content: center;
+}
+
+.title{
+  width: 70%;
+  max-width: 650px;
+  min-width: 400px;
+  object-fit: contain;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: white;
+  border-radius: 20px;
+  padding: 40px 10px;
+  margin: 20px 50px;
+  align-items: center;
+}
+
+.board-game {
+  display: flex;
+  justify-content: center;
+}
+
+.subsection {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+.play{
+  background-color: green;
+    height: 60px;
+    padding: 0 100px;
+    border-radius: 40px;
+    font-size: 18px;
+    letter-spacing: 3px;
+    font-weight: 300;
+}
+
+.play a{
+  color: white;
+  text-decoration: none;
+}
+
+.rules, .play{
+  margin: 30px;
+  /* text-align: center; */
 }
