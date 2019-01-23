@@ -33,23 +33,71 @@ gameInit();
 
 // Game click handler
 var turn = true;
+
 board.cell("each").on("click", function() {
   if (board.cell(this).get() === null) {
     if (turn) {
-      // Call function to check the rule
+      // Call function to check the rule for White pons
+
       var matrix = board.matrix(); // full board
       var currentCell = board.cell(this).where(); // place where the player wants to play
-      console.log(matrix);
-      console.log(currentCell);
-      board.cell(this).place(white.clone());
+      // TEST CASES TO RESOLVE GAME RULES
+      // var nextCell = board.cell(this, 1).get(); // works
+      // var previousCell = board.cell(this, -1).get(); // works
+      // board.cell(currentCell).DOM().classList.add("w-active"); // works (add a class to the clicked cell)
+
+      // SHIFT OF POSITION
+      var leftCell = Array(currentCell[0], currentCell[1] - 1);
+      var rightCell = Array(currentCell[0], currentCell[1] + 1);
+      var upCell = Array(currentCell[0] - 1, currentCell[1]);
+      var downCell = Array(currentCell[0] + 1, currentCell[1]);
+      var upRightCell = Array(currentCell[0] - 1, currentCell[1] + 1);
+      var upLeftCell = Array(currentCell[0] - 1, currentCell[1] - 1);
+      var downRightCell = Array(currentCell[0] + 1, currentCell[1] - 1);
+      var downLeftCell = Array(currentCell[0] + 1, currentCell[1] + 1);
+      // CONTENT OF THE POSITION BESIDE
+      var leftContent = board.cell(leftCell).get();
+      var rightContent = board.cell(rightCell).get();
+      var upContent = board.cell(upCell).get();
+      var downContent = board.cell(downCell).get();
+      var upRightContent = board.cell(upRightCell).get();
+      var upLeftContent = board.cell(upLeftCell).get();
+      var downRightContent = board.cell(downRightCell).get();
+      var downLeftContent = board.cell(downLeftCell).get();
+
+      // RULES :
+      // PLAYER CAN PLAY IF :
+      // 1 - (DONE)THERE IS A PON OF THE OPPOSITE COLOR RIGHT BESIDE THE CHOOSEN CELL
+      // 2 - THERE IS A PON OF THE SAME COLOR AT THE OPPOSITE POSITION OF THE CHOOSEN CELL
+
+      // (DONE)CHECK THE PON COLOR RIGHT NEXT TO THE CHOOSEN CELL
+      // TODO SECOND CHECK CAN BE DONE WITH EACH ONES OF THE FIRST CHECK
+      if (
+        leftContent == "B" ||
+        rightContent == "B" ||
+        upContent == "B" ||
+        downContent == "B" ||
+        upLeftContent == "B" ||
+        upRightContent == "B" ||
+        downLeftContent == "B" ||
+        downRightContent == "B"
+      ) {
+        // TODO : CHECK THE OPPOSITE PON COLOR OF THE CHOOSEN CELL
+        board.cell(this).place(white.clone());
+      }
+
+      for (i = 0; i < matrix.length; i++) {
+        for (j = 0; j < matrix[i].length; j++) {}
+      }
     } else {
       // Call function to check the rule
       var matrix = board.matrix();
       var currentCell = board.cell(this).where();
-      console.log(matrix);
-      console.log(currentCell);
+      // console.log(matrix);
+      // console.log(currentCell);
       board.cell(this).place(black.clone());
     }
+    console.log(matrix);
     turn = !turn;
   }
 });
@@ -58,11 +106,7 @@ board.cell("each").on("click", function() {
 // Function is check if the player can put the pon where is choose to
 // if not, cell will be denied : UI/UX to be defined (first will be red)
 // if ok, play a little chim sound
-function checkAllPossibilities(position, matrix) {
-  // var matrix = board.matrix();
-  // var currentCell = board.cell(this).where();
-  // console.log(matrix);
-  // console.log(currentCell);
+function checkAllPossibilities(currentCell) {
 }
 
 function gameInit() {
