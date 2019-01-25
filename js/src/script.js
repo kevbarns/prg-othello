@@ -48,6 +48,7 @@ board.cell("each").on("click", function() {
   ];
   if (board.cell(this).get() === null) {
     if (turn) {
+      // VISUAL INDICATION BLACK PLAYER
       // Call function to check the rule for white pons
       directions.forEach(function(direction) {
         var toShift = [];
@@ -69,7 +70,7 @@ board.cell("each").on("click", function() {
           }
         }
         // if cell is MATCHING time to shift    board.cell([row, col])
-        if (board.cell([row, col]).get() == "W") {
+        if (board.cell([row, col]).get() == "W" && (row !== currentCell[0] + direction.r || col !== currentCell[1] + direction.c )) {
           toShift.forEach(function(coords) {
             board.cell([coords.row, coords.col]).rid();
             board.cell([coords.row, coords.col]).place(white.clone());
@@ -78,6 +79,7 @@ board.cell("each").on("click", function() {
         }
       });
     } else {
+      // VISUAL INDICATION BLACK PLAYER
       // Call function to check the rule for black pons
       directions.forEach(function(direction) {
         var toShift = [];
@@ -99,7 +101,7 @@ board.cell("each").on("click", function() {
           }
         }
         // if cell is MATCHING time to shift    board.cell([row, col])
-        if (board.cell([row, col]).get() == "B") {
+        if (board.cell([row, col]).get() == "B" && (row !== currentCell[0] + direction.r || col !== currentCell[1] + direction.c )) {
           toShift.forEach(function(coords) {
             board.cell([coords.row, coords.col]).rid();
             board.cell([coords.row, coords.col]).place(black.clone());
