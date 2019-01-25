@@ -1,6 +1,10 @@
 // Game Settings & variables
 var boardSize = "8x8";
+var arraySize = 64;
 var turn = true;
+var whiteCount = 0;
+var blackCount = 0;
+
 // Board declaration
 var board = jsboard.board({attach: "game", size: boardSize});
 // White pon
@@ -33,6 +37,10 @@ board.cell("each").style({
 // Game initialization
 gameInit();
 
+$(document).ready(function() {
+  $(".fas-white").addClass("fas-blink");
+});
+
 board.cell("each").on("click", function() {
   var matrix = board.matrix(); // full board
   var currentCell = board.cell(this).where(); // place where the player wants to play
@@ -49,6 +57,7 @@ board.cell("each").on("click", function() {
   if (board.cell(this).get() === null) {
     if (turn) {
       // VISUAL INDICATION BLACK PLAYER
+      $(".fas-white").removeClass("fas-blink");
       // Call function to check the rule for white pons
       directions.forEach(function(direction) {
         var toShift = [];
@@ -58,6 +67,9 @@ board.cell("each").on("click", function() {
           row < 7 && col < 7;
           row += direction.r, col += direction.c
         ) {
+          if (row < 0 || col < 0) {
+            break;
+          }
           // if empty or color matching we need to stop   board.cell([row, col])
           if (
             board.cell([row, col]).get() == null ||
@@ -70,16 +82,22 @@ board.cell("each").on("click", function() {
           }
         }
         // if cell is MATCHING time to shift    board.cell([row, col])
-        if (board.cell([row, col]).get() == "W" && (row !== currentCell[0] + direction.r || col !== currentCell[1] + direction.c )) {
+        if (
+          board.cell([row, col]).get() == "W" &&
+          (row !== currentCell[0] + direction.r ||
+            col !== currentCell[1] + direction.c)
+        ) {
           toShift.forEach(function(coords) {
             board.cell([coords.row, coords.col]).rid();
             board.cell([coords.row, coords.col]).place(white.clone());
           });
           board.cell([currentCell[0], currentCell[1]]).place(white.clone());
+          $(".fas-black").addClass("fas-blink");
         }
       });
     } else {
       // VISUAL INDICATION BLACK PLAYER
+      $(".fas-black").removeClass("fas-blink");
       // Call function to check the rule for black pons
       directions.forEach(function(direction) {
         var toShift = [];
@@ -89,6 +107,9 @@ board.cell("each").on("click", function() {
           row < 7 && col < 7;
           row += direction.r, col += direction.c
         ) {
+          if (row < 0 || col < 0) {
+            break;
+          }
           // if empty or color matching we need to stop   board.cell([row, col])
           if (
             board.cell([row, col]).get() == null ||
@@ -101,20 +122,59 @@ board.cell("each").on("click", function() {
           }
         }
         // if cell is MATCHING time to shift    board.cell([row, col])
-        if (board.cell([row, col]).get() == "B" && (row !== currentCell[0] + direction.r || col !== currentCell[1] + direction.c )) {
+        if (
+          board.cell([row, col]).get() == "B" &&
+          (row !== currentCell[0] + direction.r ||
+            col !== currentCell[1] + direction.c)
+        ) {
           toShift.forEach(function(coords) {
             board.cell([coords.row, coords.col]).rid();
             board.cell([coords.row, coords.col]).place(black.clone());
           });
           board.cell([currentCell[0], currentCell[1]]).place(black.clone());
+          $(".fas-white").addClass("fas-blink");
         }
       });
     }
     turn = !turn;
     // TODO : Check for the end of the game
+    if (matrix.length == arraySize) {
+    }
+
+    var isFull = true;
+
+    matrix.forEach(function(i) {
+      // console.log(i.length);
+      i.forEach(function(j) {
+        console.log(matrix.length);
+        if (j === null) {
+          isFull = false;
+        }
+      });
+    });
+
+    if (isFull) {
+      countPon(matrix);
+    }
+
+    console.log(matrix.length);
+
+    // console.log(whiteCount, blackCount);
   }
-  // if(board.matrix.length)
 });
+
+function countPon(matrix) {
+  console.log("coucou countPon");
+  matrix.forEach(function(i) {
+    i.forEach(function(j) {
+      if (j == "W") {
+        whiteCount++;
+      } else {
+        blackCount++;
+      }
+    });
+  });
+}
 
 function gameInit() {
   board.cell([3, 3]).place(white.clone());
